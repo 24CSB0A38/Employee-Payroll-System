@@ -6,29 +6,37 @@ import java.sql.SQLException;
 
 /**
  * DBConnection.java
- * 
+ *
  * Centralized JDBC connection manager for the Payroll Management System.
  * All DAO classes obtain a Connection from this class.
- * 
+ *
+ * MySQL instance : /Users/apple/Documents/nodejs-express-mysql/.local/mysql-8.4.10-macos15-arm64
+ * Data directory : .local/mysql-data
+ * Socket         : .local/mysql-run/mysql.sock
+ * TCP port       : 3306 (bound to all interfaces)
+ *
  * Interview talking points:
  *  - DriverManager.getConnection() establishes a JDBC connection.
- *  - Connection strings carry host, port, and database info.
+ *  - We use 127.0.0.1 (loopback IP) instead of "localhost" so JDBC uses
+ *    TCP instead of a Unix socket — works reliably on all platforms.
  *  - Credentials are stored as constants for easy configuration.
  *  - Every caller is responsible for closing its own Connection.
  */
 public class DBConnection {
 
-    // ─── Configure these constants to match your MySQL installation ───────────
-    private static final String URL      = "jdbc:mysql://localhost:3306/payroll_db"
-                                           + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    // ─── Database Configuration ───────────────────────────────────────────────
+    // Using 127.0.0.1 forces TCP/IP connection (avoids Unix socket lookup)
+    private static final String URL      = "jdbc:mysql://127.0.0.1:3306/payroll_db"
+                                           + "?useSSL=false"
+                                           + "&serverTimezone=Asia/Kolkata"
+                                           + "&allowPublicKeyRetrieval=true"
+                                           + "&autoReconnect=true";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root"; // ← change to your MySQL password
+    private static final String PASSWORD = "123456";
     // ──────────────────────────────────────────────────────────────────────────
 
     static {
         try {
-            // Explicitly load the MySQL JDBC driver (good practice for Java 8 and below;
-            // optional in Java 9+ but shows understanding in interviews)
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.err.println("[DBConnection] MySQL JDBC Driver not found: " + e.getMessage());
@@ -48,7 +56,6 @@ public class DBConnection {
 
     /**
      * Quick connectivity test used on application startup.
-     * Displays a friendly error dialog and returns false when the DB is down.
      *
      * @return true if a connection was successfully obtained and closed
      */
@@ -56,6 +63,7 @@ public class DBConnection {
         try (Connection con = getConnection()) {
             return con != null && !con.isClosed();
         } catch (SQLException e) {
+            System.err.println("[DBConnection] Test failed: " + e.getMessage());
             return false;
         }
     }

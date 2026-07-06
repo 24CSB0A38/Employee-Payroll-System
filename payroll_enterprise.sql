@@ -25,8 +25,7 @@
 
 CREATE DATABASE IF NOT EXISTS payroll_db
     CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci
-    COMMENT 'Enterprise Payroll Management System v2.0';
+    COLLATE utf8mb4_unicode_ci;
 
 USE payroll_db;
 
