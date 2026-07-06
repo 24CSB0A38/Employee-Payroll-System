@@ -1,0 +1,17 @@
+# Compiled Java class files
+out/
+
+# macOS system files
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# NetBeans
+nbproject/
+build/
+dist/
