@@ -2,7 +2,7 @@
 
 A **full-stack desktop application** combining an enterprise-grade **MySQL 8.x database** with a professional **Java Swing GUI**, demonstrating core software engineering competencies: JDBC, OOP, DAO pattern, MVC architecture, stored procedures, and 4-tier role-based authentication.
 
-> 🎯 Built for **FAANG-level software engineering portfolios** — simple enough to explain confidently in interviews, polished enough to impress.
+> 🎯 Built for software engineering portfolios** — simple enough to explain confidently in interviews, polished enough to impress.
 
 ---
 
